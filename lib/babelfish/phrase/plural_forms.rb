@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'babelfish/phrase/node'
 require 'babelfish/phrase/pluralizer'
 require 'babelfish/phrase/compiler'

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'babelfish/phrase/literal'
 require 'babelfish/phrase/variable'
 require 'babelfish/phrase/plural_forms'

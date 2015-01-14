@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'babelfish/phrase/plural_forms'
 
 class Babelfish
@@ -37,11 +38,11 @@ class Babelfish
                 init( $phrase )  unless phrase.nil?
 
                 # тут проще регуляркой
-                forms = phrase.split( /(?<!\\)\|/s )
+                forms = phrase.split( /(?<!\\)\|/ )
 
                 forms.each do |form|
                     value = nil
-                    if form =~ /\A=([0-9]+)\s*(.+)\z/s
+                    if form =~ /^=([0-9]+)\s*(.+)$/
                         value, form = $1, $2
                     end
                     form = phrase_parser.parse( form )

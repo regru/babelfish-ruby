@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Babelfish
     module Phrase
         # Babelfish pluralizer.
@@ -15,8 +16,9 @@ class Babelfish
                 return @rules[locale]  if @rules.has_key?(locale)
 
                 locale = @rules.keys.find do |loc|
-                    locale =~ /\A\Q#{loc}\E[\-_]/s
-                end || 'en'
+                    /^#{Regexp.escape(loc)}[\-_]/.match(locale) ? loc : nil
+                end
+                locale = 'en'  if locale.nil?
 
                 return @rules[locale]
             end
@@ -38,7 +40,7 @@ class Babelfish
                 'ses', 'lo', 'kde', 'ms', 'fa', 'root', 'sah', 'sg',
                 'ii',  'th', 'bo', 'to', 'tr', 'vi', 'wo', 'yo'
             ], lambda { |n|
-                return 0;
+                return 0
             });
 
             # Manx
@@ -47,10 +49,10 @@ class Babelfish
                 m10, m20 = n % 10, n % 20
 
                 if (m10 == 1 || m10 == 2 || m20 == 0) && is_int(n)
-                    return 0;
+                    return 0
                end
 
-                return 1;
+                return 1
             });
 
 
@@ -58,10 +60,10 @@ class Babelfish
 
             add(['tzm'],  lambda { |n|
                 if n == 0 || n == 1 || (11 <= n && n <= 99 && is_int(n))
-                    return 0;
+                    return 0
                end
 
-                return 1;
+                return 1
             });
 
 
@@ -69,10 +71,10 @@ class Babelfish
 
             add(['mk'], lambda { |n|
                 if (n % 10 == 1) && (n != 11) && is_int(n)
-                    return 0;
+                    return 0
                end
 
-                return 1;
+                return 1
             });
 
 
@@ -114,14 +116,14 @@ class Babelfish
 
             add(['lv'], lambda { |n|
                 if n == 0
-                    return 0;
+                    return 0
                end
 
                 if (n % 10 == 1) && (n % 100 != 11) && is_int(n)
-                    return 1;
+                    return 1
                end
 
-                return 2;
+                return 2
             });
 
 
@@ -147,28 +149,28 @@ class Babelfish
             add(['be', 'bs', 'hr', 'ru', 'sr', 'sh', 'uk'], lambda { |n|
                 m10, m100 = n % 10, n % 100
 
-                if !is_int(n)
-                    return 3;
+                unless is_int(n)
+                    return 3
                end
 
                 # one → n mod 10 is 1 and n mod 100 is not 11;
                 if 1 == m10 && 11 != m100
-                    return 0;
+                    return 0
                end
 
                 # few → n mod 10 in 2..4 and n mod 100 not in 12..14;
                 if 2 <= m10 && m10 <= 4 && !(12 <= m100 && m100 <= 14)
-                    return 1;
+                    return 1
                end
 
                 ## many → n mod 10 is 0 or n mod 10 in 5..9 or n mod 100 in 11..14;
                 ##  if 0 === m10 || (5 <= m10 && m10 <= 9) || (11 <= m100 && m100 <= 14)
-                ##   return 2;
+                ##   return 2
                 ##end
 
                 ## other
-                ## return 3;
-                return 2;
+                ## return 3
+                return 2
             });
 
 
@@ -177,24 +179,24 @@ class Babelfish
             add(['pl'], lambda { |n|
                 m10, m100 = n % 10, n % 100
 
-                if !is_int(n)
-                    return 3;
+                unless is_int(n)
+                    return 3
                end
 
                 # one → n is 1;
                 if n == 1
-                    return 0;
+                    return 0
                end
 
                 # few → n mod 10 in 2..4 and n mod 100 not in 12..14;
                 if 2 <= m10 && m10 <= 4 && !(12 <= m100 && m100 <= 14)
-                    return 1;
+                    return 1
                end
 
                 # many → n is not 1 and n mod 10 in 0..1 or
                 # n mod 10 in 5..9 or n mod 100 in 12..14
                 # (all other except partials)
-                return 2;
+                return 2
             });
 
 
@@ -203,22 +205,22 @@ class Babelfish
             add(['lt'], lambda { |n|
                 m10, m100 = n % 10, n % 100
 
-                if !is_int(n)
-                    return 2;
+                unless is_int(n)
+                    return 2
                end
 
                 # one → n mod 10 is 1 and n mod 100 not in 11..19
                 if m10 == 1 && !(11 <= m100 && m100 <= 19)
-                    return 0;
+                    return 0
                end
 
                 # few → n mod 10 in 2..9 and n mod 100 not in 11..19
                 if 2 <= m10 && m10 <= 9 && !(11 <= m100 && m100 <= 19)
-                    return 1;
+                    return 1
                end
 
                 # other
-                return 2;
+                return 2
             });
 
 
@@ -234,22 +236,22 @@ class Babelfish
             add(['mo', 'ro'], lambda { |n|
                 m100 = n % 100;
 
-                if !is_int(n)
-                    return 2;
+                unless is_int(n)
+                    return 2
                end
 
                 # one → n is 1
                 if n == 1
-                    return 0;
+                    return 0
                end
 
                 # few → n is 0 OR n is not 1 AND n mod 100 in 1..19
                 if n == 0 || (1 <= m100 && m100 <= 19)
-                    return 1;
+                    return 1
                end
 
                 # other
-                return 2;
+                return 2
             });
 
 
@@ -258,16 +260,16 @@ class Babelfish
             add(['cs', 'sk'], lambda { |n|
                 # one → n is 1
                 if n == 1
-                    return 0;
+                    return 0
                end
 
                 # few → n in 2..4
                 if n == 2 || n == 3 || n == 4
-                    return 1;
+                    return 1
                end
 
                 # other
-                return 2;
+                return 2
             });
 
 
@@ -277,27 +279,27 @@ class Babelfish
             add(['sl'], lambda { |n|
                 m100 = n % 100;
 
-                if !is_int(n)
-                    return 3;
+                unless is_int(n)
+                    return 3
                end
 
                 # one → n mod 100 is 1
                 if m100 == 1
-                    return 0;
+                    return 0
                end
 
                 # one → n mod 100 is 2
                 if m100 == 2
-                    return 1;
+                    return 1
                end
 
                 # one → n mod 100 in 3..4
                 if m100 == 3 || m100 == 4
-                    return 2;
+                    return 2
                end
 
                 # other
-                return 3;
+                return 3
             });
 
 
@@ -306,27 +308,27 @@ class Babelfish
             add(['mt'], lambda { |n|
                 m100 = n % 100;
 
-                if !is_int(n)
-                    return 3;
+                unless is_int(n)
+                    return 3
                end
 
                 # one → n is 1
                 if n == 1
-                    return 0;
+                    return 0
                end
 
                 # few → n is 0 or n mod 100 in 2..10
                 if n == 0 || (2 <= m100 && m100 <= 10)
-                    return 1;
+                    return 1
                end
 
                 # many → n mod 100 in 11..19
                 if 11 <= m100 && m100 <= 19
-                    return 2;
+                    return 2
                end
 
                 # other
-                return 3;
+                return 3
             });
 
 
@@ -335,32 +337,32 @@ class Babelfish
             add(['ar'], lambda { |n|
                 m100 = n % 100;
 
-                if !is_int(n)
-                    return 5;
+                unless is_int(n)
+                    return 5
                end
 
                 if n == 0
-                    return 0;
+                    return 0
                end
                 if n == 1
-                    return 1;
+                    return 1
                end
                 if n == 2
-                    return 2;
+                    return 2
                end
 
                 # few → n mod 100 in 3..10
                 if 3 <= m100 && m100 <= 10
-                    return 3;
+                    return 3
                end
 
                 # many → n mod 100 in 11..99
                 if 11 <= m100 && m100 <= 99
-                    return 4;
+                    return 4
                end
 
                 # other
-                return 5;
+                return 5
             });
 
 
@@ -368,22 +370,22 @@ class Babelfish
 
             add(['br', 'cy'], lambda { |n|
                 if n == 0
-                    return 0;
+                    return 0
                end
                 if n == 1
-                    return 1;
+                    return 1
                end
                 if n == 2
-                    return 2;
+                    return 2
                end
                 if n == 3
-                    return 3;
+                    return 3
                end
                 if n == 6
-                    return 4;
+                    return 4
                end
 
-                return 5;
+                return 5
             });
 
 

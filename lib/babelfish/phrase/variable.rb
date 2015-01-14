@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'babelfish/phrase/node'
 
 class Babelfish

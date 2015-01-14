@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'find'
 require 'yaml'
 
@@ -68,7 +69,7 @@ class Babelfish
 
     def detect_locale(locale)
         return locale  if dictionaries.has_key?(locale)
-        alt_locale = dictionaries.keys.find { |loc| loc =~ /\A\Q#{locale}\E[\-_]/i }
+        alt_locale = dictionaries.keys.find { |loc| loc =~ /^#{Regexp.escape(locale)}[\-_]/i }
         if alt_locale && dictionaries.has_key?(alt_locale)
             # Lets locale dictionary will refer to alt locale dictinary.
             # This speeds up all subsequent calls of t/detect/exists on this locale.
@@ -99,7 +100,7 @@ class Babelfish
                 locale = tmp.pop
                 dictname = tmp.join('.')
                 subdir = directories
-                if subdir =~ /\A\Q#{fdir}\E[\\\/](.+)\z/
+                if subdir =~ /^#{Regexp.escape(fdir)}[\\\/](.+)$/
                     dictname = "#{$1}#{dictname}"
                 end
                 _load_dictionary( dictname, locale, file )
@@ -195,8 +196,8 @@ class Babelfish
                 # Scalar interpreted as { count => scalar, value => scalar }.
                 unless params.kind_of?(Hash)
                     flat_params = {
-                        count: params,
-                        value: params,
+                        'count' => params,
+                        'value' => params,
                     }
                 else
                     _flat_hash_keys( params, '', flat_params )
@@ -250,7 +251,7 @@ class Babelfish
             if value.kind_of?(Hash)
                 _flat_hash_keys( value, "#{prefix}#{key}.", store )
             else
-                store["#{prefix}#{key}"] = value.kind_of?(Symbol) ? value.to_s.freeze : value
+                store["#{prefix}#{key}"] = value.kind_of?(Symbol) ? value.to_s : value
             end
         end
         return true
