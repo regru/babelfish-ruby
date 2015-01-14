@@ -49,7 +49,6 @@ class Babelfish
                         throw("Unknown AST node: #{node}")
                     end
                 end
-                p ready
 
                 lambda do |params|
                     data = ready.map do |what|
