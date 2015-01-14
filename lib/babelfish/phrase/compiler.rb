@@ -52,7 +52,6 @@ class Babelfish
 
                 lambda do |params|
                     data = ready.map do |what|
-                        p what
                         case what
                         when Babelfish::Phrase::Variable
                             params[what.name.to_s].to_s
