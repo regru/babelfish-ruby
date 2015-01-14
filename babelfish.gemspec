@@ -6,7 +6,7 @@ $LOAD_PATH.unshift(lib_path)  unless $LOAD_PATH.include? lib_path
 require 'babelfish/version'
 
 Gem::Specification.new do |s|
-  s.name     = "babelfish"
+  s.name     = "babelfish-ruby"
   s.version  = Babelfish::VERSION.dup
   s.date = Time.now.strftime('%Y-%m-%d')
   s.summary  = "Babelfish syntax internationalization module."
