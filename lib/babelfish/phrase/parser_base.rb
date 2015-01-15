@@ -21,7 +21,7 @@ class Babelfish
       # Gets character on current cursor position.
       # Will return empty string if no character.
       def char
-        r = phrase[ index ]
+        r = phrase[index]
         r.nil? ? '' : r
       end
 
@@ -29,22 +29,22 @@ class Babelfish
       # Will return empty string if no character.
       def next_char
         return ''  if index >= length - 1
-        r = phrase[ index + 1 ]
+        r = phrase[index + 1]
         r.nil? ? '' : r
       end
 
       # Moves cursor to next position.
       # Return new current character.
       def to_next_char
-        self.prev = char  if self.index >= 0
-        self.index =  self.index + 1
-        return ''  if self.index == length
-        char()
+        self.prev = char  if index >= 0
+        self.index =  index + 1
+        return ''  if index == length
+        char
       end
 
       # Throws given message in phrase context.
-      def throw( message )
-        raise "Cannot parse phrase \"" + ( phrase || 'nil' ) + "\" at " + ( index || '-1' )+ " index: #{message}"
+      def throw(message)
+        fail "Cannot parse phrase \"" + (phrase || 'nil') + "\" at " + (index || '-1') + " index: #{message}"
       end
 
       # Adds given chars to current piece.
@@ -56,15 +56,15 @@ class Babelfish
       def backward
         self.index = index - 1
         if index > 0
-          r = phrase[ index - 1 ]
+          r = phrase[index - 1]
           self.prev = r.nil? ? '' : r
         end
       end
 
       # Parses specified phrase.
-      def parse( phrase = nil )
+      def parse(phrase = nil)
         init(phrase)  unless phrase.nil?
-        throw( "No phrase given" )  if phrase.nil?
+        throw('No phrase given')  if phrase.nil?
         phrase
       end
     end
