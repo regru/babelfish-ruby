@@ -4,67 +4,67 @@ require 'babelfish/phrase/variable'
 require 'babelfish/phrase/plural_forms'
 
 class Babelfish
-    module Phrase
-        # Babelfish AST Compiler.
-        # Compiles AST to string or to Proc.
-        class Compiler
-            attr_accessor :ast
+  module Phrase
+    # Babelfish AST Compiler.
+    # Compiles AST to string or to Proc.
+    class Compiler
+      attr_accessor :ast
 
-            def initialize( ast = nil )
-                init( ast )  unless ast.nil?
-            end
+      def initialize(ast = nil)
+        init(ast)  unless ast.nil?
+      end
 
-            # Initializes compiler. Should not be called directly.
-            def init( ast )
-                self.ast = ast
-            end
+      # Initializes compiler. Should not be called directly.
+      def init(ast)
+        self.ast = ast
+      end
 
-            # Throws given message in compiler context.
-            def throw( message )
-                raise "Cannot compile: #{message}";
-            end
+      # Throws given message in compiler context.
+      def throw(message)
+        fail "Cannot compile: #{message}"
+      end
 
-            # Compiles AST.
+      # Compiles AST.
 
-            # Result is string when possible; Proc otherwise.
-            def compile ( ast )
-                init( ast )  unless ast.nil?
+      # Result is string when possible; Proc otherwise.
+      def compile(ast)
+        init(ast)  unless ast.nil?
 
-                throw("No AST given")  if ast.nil?
-                throw("Empty AST given")  if ast.length == 0;
+        throw('No AST given')  if ast.nil?
+        throw('Empty AST given')  if ast.length == 0
 
-                if ast.length == 1 && ast.first.kind_of?(Babelfish::Phrase::Literal)
-                    #  просто строка
-                    return ast.first.text
-                end
-
-                ready = ast.map do |node|
-                    case node
-                    when Babelfish::Phrase::Literal
-                        node.text
-                    when Babelfish::Phrase::Variable
-                        node
-                    when Babelfish::Phrase::PluralForms
-                        sub = node.to_ruby_method
-                    else
-                        throw("Unknown AST node: #{node}")
-                    end
-                end
-
-                lambda do |params|
-                    data = ready.map do |what|
-                        case what
-                        when Babelfish::Phrase::Variable
-                            params[what.name.to_s].to_s
-                        when Proc
-                            what = what.call(params)
-                        else
-                            what
-                        end
-                    end.join('')
-                    data
-                end
-            end
+        if ast.length == 1 && ast.first.is_a?(Babelfish::Phrase::Literal)
+          #  просто строка
+          return ast.first.text
         end
+
+        ready = ast.map do |node|
+          case node
+          when Babelfish::Phrase::Literal
+            node.text
+          when Babelfish::Phrase::Variable
+            node
+          when Babelfish::Phrase::PluralForms
+            sub = node.to_ruby_method
+          else
+            throw("Unknown AST node: #{node}")
+          end
+        end
+
+        lambda do |params|
+          data = ready.map do |what|
+            case what
+            when Babelfish::Phrase::Variable
+              params[what.name.to_s].to_s
+            when Proc
+              what = what.call(params)
+            else
+              what
+            end
+          end.join('')
+          data
+        end
+      end
     end
+  end
 end

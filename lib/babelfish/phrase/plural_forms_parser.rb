@@ -2,63 +2,62 @@
 require 'babelfish/phrase/plural_forms'
 
 class Babelfish
-    module Phrase
-        # Babelfish plurals syntax parser.
+  module Phrase
+    # Babelfish plurals syntax parser.
 
-        # Returns { script_forms: {}, regular_forms: [] }
+    # Returns { script_forms: {}, regular_forms: [] }
 
-        # Every plural form represented as AST.
+    # Every plural form represented as AST.
 
-        class PluralFormsParser
-            attr_accessor :phrase, :strict_forms, :regular_forms
+    class PluralFormsParser
+      attr_accessor :phrase, :strict_forms, :regular_forms
 
-            class << self
-                attr_accessor :phrase_parser
-            end
+      class << self
+          attr_accessor :phrase_parser
+      end
 
-            def phrase_parser
-                PluralFormsParser.phrase_parser ||= Babelfish::Phrase::Parser.new
-            end
+      def phrase_parser
+        PluralFormsParser.phrase_parser ||= Babelfish::Phrase::Parser.new
+      end
 
+      # Instantiates parser.
+      def initialize(phrase = nil)
+        init(phrase)  unless phrase.nil?
+      end
 
-            # Instantiates parser.
-            def initialize( phrase = nil )
-                init( phrase )  unless phrase.nil?
-            end
+      # Initializes parser. Should not be called directly.
+      def init(phrase)
+        self.phrase = phrase
+        self.regular_forms = []
+        self.strict_forms = {}
+      end
 
-            # Initializes parser. Should not be called directly.
-            def init( phrase )
-                self.phrase = phrase
-                self.regular_forms = []
-                self.strict_forms = {}
-            end
+      # Parses specified phrase.
+      def parse(phrase)
+        init($phrase)  unless phrase.nil?
 
-            # Parses specified phrase.
-            def parse( phrase )
-                init( $phrase )  unless phrase.nil?
+        # тут проще регуляркой
+        forms = phrase.split(/(?<!\\)\|/)
 
-                # тут проще регуляркой
-                forms = phrase.split( /(?<!\\)\|/ )
+        forms.each do |form|
+          value = nil
+          if form =~ /^=([0-9]+)\s*(.+)$/
+            value, form = Regexp.last_match[1], Regexp.last_match[2]
+          end
+          form = phrase_parser.parse(form)
 
-                forms.each do |form|
-                    value = nil
-                    if form =~ /^=([0-9]+)\s*(.+)$/
-                        value, form = $1, $2
-                    end
-                    form = phrase_parser.parse( form )
-
-                    if value.nil?
-                        regular_forms.push form
-                    else
-                        strict_forms[value] = form
-                    end
-                end
-
-                return {
-                    strict:  strict_forms,
-                    regular: regular_forms,
-                }
-            end
+          if value.nil?
+            regular_forms.push form
+          else
+            strict_forms[value] = form
+          end
         end
+
+        {
+          strict:  strict_forms,
+          regular: regular_forms
+        }
+      end
     end
+  end
 end

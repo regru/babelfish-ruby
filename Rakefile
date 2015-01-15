@@ -12,14 +12,14 @@ RSpec::Core::RakeTask.new
 RSpec::Core::RakeTask.new(:rcov) do |t|
   t.rcov = true
   t.ruby_opts = '-w'
-  t.rcov_opts = %q[-Ilib --exclude "spec/*,gems/*"]
+  t.rcov_opts = '-Ilib --exclude "spec/*,gems/*"'
 end
 
-task :default => :spec
+task default: :spec
 
 require 'yard'
 
 YARD::Rake::YardocTask.new do |yard|
-  version = File.exists?('VERSION') ? IO.read('VERSION') : ""
+  version = File.exist?('VERSION') ? IO.read('VERSION') : ''
   yard.options << "--title='git-commit-notifier #{version}'"
 end
