@@ -72,54 +72,54 @@ ru-RU:
 ```ruby
 # Create new instance of Babelfish with default language/locale: 'en-GB'
 require 'babelfish'
-i18n = Babelfish.new('en-GB');
+i18n = Babelfish.new('en-GB')
 
 
 # Fill in some phrases
-i18n.addPhrase('en-GB', 'demo.hello',         'Hello, #{user.name}.');
-i18n.addPhrase('en-GB', 'demo.conv.wazup',    'Whats up?');
-i18n.addPhrase('en-GB', 'demo.conv.alright',  'Alright, man!');
-i18n.addPhrase('en-GB', 'demo.coerce',        'Total: #{count}.');
+i18n.addPhrase('en-GB', 'demo.hello',         'Hello, #{user.name}.')
+i18n.addPhrase('en-GB', 'demo.conv.wazup',    'Whats up?')
+i18n.addPhrase('en-GB', 'demo.conv.alright',  'Alright, man!')
+i18n.addPhrase('en-GB', 'demo.coerce',        'Total: #{count}.')
 
-i18n.addPhrase('ru-RU', 'demo.hello',         'Привет, #{user.name}.');
-i18n.addPhrase('ru-RU', 'demo.conv.wazup',    'Как дела?');
+i18n.addPhrase('ru-RU', 'demo.hello',         'Привет, #{user.name}.')
+i18n.addPhrase('ru-RU', 'demo.conv.wazup',    'Как дела?')
 
-i18n.addPhrase('uk-UA', 'demo.hello',         'Здоровенькі були, #{user.name}.');
+i18n.addPhrase('uk-UA', 'demo.hello',         'Здоровенькі були, #{user.name}.')
 
 
 # Set locale fallback to use the most appropriate translation when possible
-i18n.setFallback('by-BY', 'ru-RU');
+i18n.setFallback('by-BY', 'ru-RU')
 
 
 # Translate
-var params = {user: {name: 'ixti'}};
+var params = {user: {name: 'ixti'}}
 
-i18n.t('demo.hello', params, 'ru-RU');  // -> 'Привет, ixti.'
-i18n.t('demo.conv.wazup', 'ru-RU');     // -> 'Как дела?'
-i18n.t('demo.conv.alright', 'ru-RU');   // -> 'Alright, man!'
+i18n.t('demo.hello', params, 'ru-RU')  # -> 'Привет, ixti.'
+i18n.t('demo.conv.wazup', 'ru-RU')     # -> 'Как дела?'
+i18n.t('demo.conv.alright', 'ru-RU')   # -> 'Alright, man!'
 
-i18n.t('demo.hello', params, 'uk-UA');  // -> 'Здоровенькі були, ixti.'
-i18n.t('demo.conv.wazup', 'uk-UA');     // -> 'Как дела?'
-i18n.t('demo.conv.alright', 'uk-UA');   // -> 'Alright, man!'
+i18n.t('demo.hello', params, 'uk-UA')  # -> 'Здоровенькі були, ixti.'
+i18n.t('demo.conv.wazup', 'uk-UA')     # -> 'Как дела?'
+i18n.t('demo.conv.alright', 'uk-UA')   # -> 'Alright, man!'
 
 # When params is number or strings, it will be coerced to
 # `{ count: XXX, value: XXX }` - use any of those in phrase.
-i18n.t('demo.coerce', 5, 'en-GB');      // -> 'Total: 5.'
+i18n.t('demo.coerce', 5, 'en-GB')      # -> 'Total: 5.'
 
 
 # You may wish to "dump" translations to load in browser later
 # Dump will include all fallback translations and fallback rules
-var locale_dump = i18n.stringify('ru-RU');
+var locale_dump = i18n.stringify('ru-RU')
 
 # Use objects instead of strings (object/array/number/boolean) - can be
 # useful to prepare bulk data for external libraries.
 # Note, only JSON-supported types are ok (no date & regex)
-i18n.addPhrase('en-GB', 'demo.boolean',  true);
-i18n.addPhrase('en-GB', 'demo.number',   123);
-i18n.addPhrase('en-GB', 'demo.array',    [1, 2, 3]);
+i18n.addPhrase('en-GB', 'demo.boolean',  true)
+i18n.addPhrase('en-GB', 'demo.number',   123)
+i18n.addPhrase('en-GB', 'demo.array',    [1, 2, 3])
 # fourth param required for hashes (objects) to disable flattening,
 # other types are autodetected
-i18n.addPhrase('en-GB', 'demo.array',    { foo:1, bar:"2" }, false);
+i18n.addPhrase('en-GB', 'demo.array',    { foo:1, bar:"2" }, false)
 ```
 
 ### Implementations in other languages
