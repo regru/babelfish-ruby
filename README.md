@@ -72,7 +72,7 @@ ru-RU:
 ```ruby
 # Create new instance of Babelfish with default language/locale: 'en-GB'
 require 'babelfish'
-i18n = new Babelfish('en-GB');
+i18n = Babelfish.new('en-GB');
 
 
 # Fill in some phrases
@@ -88,32 +88,28 @@ i18n.addPhrase('uk-UA', 'demo.hello',         'Здоровенькі були, 
 
 
 # Set locale fallback to use the most appropriate translation when possible
-i18n.setFallback('uk-UA', 'ru-RU');
+i18n.setFallback('by-BY', 'ru-RU');
 
 
 # Translate
 var params = {user: {name: 'ixti'}};
 
-i18n.t('ru-RU', 'demo.hello', params);  // -> 'Привет, ixti.'
-i18n.t('ru-RU', 'demo.conv.wazup');     // -> 'Как дела?'
-i18n.t('ru-RU', 'demo.conv.alright');   // -> 'Alright, man!'
+i18n.t('demo.hello', params, 'ru-RU');  // -> 'Привет, ixti.'
+i18n.t('demo.conv.wazup', 'ru-RU');     // -> 'Как дела?'
+i18n.t('demo.conv.alright', 'ru-RU');   // -> 'Alright, man!'
 
-i18n.t('uk-UA', 'demo.hello', params);  // -> 'Здоровенькі були, ixti.'
-i18n.t('uk-UA', 'demo.conv.wazup');     // -> 'Как дела?'
-i18n.t('uk-UA', 'demo.conv.alright');   // -> 'Alright, man!'
+i18n.t('demo.hello', params, 'uk-UA');  // -> 'Здоровенькі були, ixti.'
+i18n.t('demo.conv.wazup', 'uk-UA');     // -> 'Как дела?'
+i18n.t('demo.conv.alright', 'uk-UA');   // -> 'Alright, man!'
 
 # When params is number or strings, it will be coerced to
 # `{ count: XXX, value: XXX }` - use any of those in phrase.
-i18n.t('en-GB', 'demo.coerce', 5);      // -> 'Total: 5.'
+i18n.t('demo.coerce', 5, 'en-GB');      // -> 'Total: 5.'
 
 
 # You may wish to "dump" translations to load in browser later
 # Dump will include all fallback translations and fallback rules
 var locale_dump = i18n.stringify('ru-RU');
-
-var i18n_new = require('babelfish')('en-GB'); // init without `new` also works
-i18n_new.load(locale_dump);
-
 
 # Use objects instead of strings (object/array/number/boolean) - can be
 # useful to prepare bulk data for external libraries.
@@ -126,9 +122,9 @@ i18n.addPhrase('en-GB', 'demo.array',    [1, 2, 3]);
 i18n.addPhrase('en-GB', 'demo.array',    { foo:1, bar:"2" }, false);
 ```
 
-
 ### Implementations in other languages
 
+- JavaScript - [nodeca/babelfish](https://github.com/nodeca/babelfish)
 - Perl - [Locale::Babelfish](https://metacpan.org/pod/Locale::Babelfish)
 
 
