@@ -146,7 +146,7 @@ class Babelfish
     on_watcher_change
   end
 
-  def t_or_undef(dictname_key, params = nil, custom_locale = nil)
+  def t_or_nil(dictname_key, params = nil, custom_locale = nil)
     # disallow non-ASCII keys
     fail("wrong dictname_key: #{dictname_key}")  if dictname_key =~ /\P{ASCII}/
 
@@ -206,7 +206,7 @@ class Babelfish
   end
 
   def t(dictname_key, params = nil, custom_locale = nil)
-    t_or_undef(dictname_key, params, custom_locale) || "[#{dictname_key}]"
+    t_or_nil(dictname_key, params, custom_locale) || "[#{dictname_key}]"
   end
 
   def has_any_value(dictname_key, custom_locale = nil)
