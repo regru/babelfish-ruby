@@ -133,7 +133,8 @@ class Babelfish
     self.locale = default_locale
   end
 
-  def look_for_watchers
+  def check_for_changes
+    return  unless watch?
     ok = true
     watchers.each_pair do | file, mtime |
       new_mtime = File.mtime(file)
@@ -149,8 +150,6 @@ class Babelfish
   def t_or_nil(dictname_key, params = nil, custom_locale = nil)
     # disallow non-ASCII keys
     fail("wrong dictname_key: #{dictname_key}")  if dictname_key =~ /\P{ASCII}/
-
-    look_for_watchers  if watch?
 
     _locale = custom_locale ? detect_locale(custom_locale) : locale
 
@@ -212,8 +211,6 @@ class Babelfish
   def has_any_value(dictname_key, custom_locale = nil)
     # disallow non-ASCII keys
     fail("wrong dictname_key: #{dictname_key}")  if dictname_key =~ /\P{ASCII}/
-
-    look_for_watchers  if watch?
 
     _locale = custom_locale ? detect_locale(custom_locale) : locale
 
